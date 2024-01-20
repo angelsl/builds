@@ -11,3 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - run: podman-backport-bookworm/build.sh
+      - uses: actions/upload-artifact@694cdabd8bdb0f10b2cea11669e1bf5453eed0a6
+        with:
+          path: podman-backport-bookworm/*/*.deb
