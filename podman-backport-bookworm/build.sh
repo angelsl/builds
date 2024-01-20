@@ -6,18 +6,17 @@ cd "$(dirname ${BASH_SOURCE[0]})"
 
 export DEBIAN_FRONTEND=noninteractive
 TAG=v4.8.3
+DEBIAN_REV=350b6e77e2267beb83b76abbb5f847c8f969c4a5
 
 mkdir -p /etc/apt/sources.list.d
 cat <<EOF > /etc/apt/sources.list.d/src.list
 deb-src http://deb.debian.org/debian testing main
 EOF
 apt-get update -qy
-apt-get install -qy packaging-dev debian-keyring devscripts equivs
+apt-get install -qy packaging-dev debian-keyring devscripts equivs curl
 
-git clone --depth=1 -b 350b6e77e2267beb83b76abbb5f847c8f969c4a5 https://salsa.debian.org/debian/libpod.git debian-libpod
 git clone --depth=1 -b $TAG https://github.com/containers/podman.git podman
-cp -r debian-libpod/debian podman/
-rm -rf debian-libpod
+curl "https://salsa.debian.org/debian/libpod/-/archive/${DEBIAN_REV}/libpod-${DEBIAN_REV}.tar.gz?path=debian" | tar -C podman --strip-components=1 -zxv
 cp control changelog podman/debian/
 
 cd podman
