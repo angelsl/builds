@@ -5,20 +5,7 @@ set -euxo pipefail
 cd "$(dirname ${BASH_SOURCE[0]})"
 
 export DEBIAN_FRONTEND=noninteractive
-
-dopkg() {
-  mkdir "$1"
-  pushd "$1"
-  apt-get source "$1"/testing
-  cd "$1"-*/
-  mk-build-deps --install --remove --tool 'apt-get -qy -o Debug::pkgProblemResolver=yes --no-install-recommends'
-  EDITOR=true EMAIL="root@localhost" dch --bpo ""
-  dpkg-buildpackage --build=binary --unsigned-changes
-  cd ..
-  dpkg -i *.deb || true
-  apt-get -qy install -f || true
-  popd
-}
+TAG=v4.8.3
 
 mkdir -p /etc/apt/sources.list.d
 cat <<EOF > /etc/apt/sources.list.d/src.list
@@ -27,11 +14,16 @@ EOF
 apt-get update -qy
 apt-get install -qy packaging-dev debian-keyring devscripts equivs
 
-dopkg golang-github-containers-storage
-dopkg golang-github-container-orchestrated-devices-container-device-interface
-dopkg golang-github-containers-buildah-dev
+git clone --depth=1 -b 350b6e77e2267beb83b76abbb5f847c8f969c4a5 https://salsa.debian.org/debian/libpod.git debian-libpod
+git clone --depth=1 -b $TAG https://github.com/containers/podman.git podman
+cp -r debian-libpod/debian podman/
+rm -rf debian-libpod
+cp control changelog podman/debian/
 
-dopkg golang-github-checkpoint-restore-go-criu
-dopkg golang-github-checkpoint-restore-checkpointctl
-
-dopkg libpod
+cd podman
+git add -f .
+git -c user.name=root -c user.email='root@localhost' commit -m 'import debian'
+git tag -f $TAG
+mk-build-deps --install --remove --tool 'apt-get -qy -o Debug::pkgProblemResolver=yes --no-install-recommends'
+git clean -xfd
+dpkg-buildpackage --build=binary --unsigned-changes

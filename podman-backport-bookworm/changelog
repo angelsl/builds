@@ -1,0 +1,865 @@
+libpod (4.8.3-1~bpo12~sl1) unstable; urgency=medium
+
+  * build 4.8.3 vendored
+
+ -- angelsl <angelsl@localhost>  Sun, 21 Jan 2024 00:00:00 +0800
+
+libpod (4.7.2+ds1-2) unstable; urgency=medium
+
+  * upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 03 Nov 2023 06:16:15 -0400
+
+libpod (4.7.2+ds1-1) experimental; urgency=medium
+
+  [ Faidon Liambotis ]
+  * Remove a superfluous stanza from d/copyright.
+  * Drop fuse-overlayfs Suggests, as the kernel overlayfs driver can be used
+    with rootless containers since Linux v5.13 and is now recommended.
+  * Remove versioned Depends/Recommends/Breaks for versions that predate
+    oldstable (bullseye).
+  * Ship the new podmansh login shell. See podmansh(1) for a detailed
+    description of this new tool. Note that this is still considered a
+    technology preview by upstream.
+
+  [ Reinhard Tartler ]
+  * New upstream release
+  * Drop all vendored libraries, but a single file that is copied in.
+    - Fixed https://github.com/moby/moby/security/advisories/GHSA-jq35-85cj-fj4p
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 02 Nov 2023 17:57:39 -0400
+
+libpod (4.7.1+ds4-5) unstable; urgency=medium
+
+  * avoid file conflict with podman-compose
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 27 Oct 2023 14:58:33 -0400
+
+libpod (4.7.1+ds4-4) unstable; urgency=medium
+
+  * Upload to unstable
+  * Build against golang-github-checkpoint-restore-go-criu-dev v6
+  * drop patches merged upstream
+  * drop disable-sigstore.patch
+  * avoid file conflicts with docker-compose (Closes: #1054460)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 27 Oct 2023 14:01:53 -0400
+
+libpod (4.7.1+ds4-3) experimental; urgency=medium
+
+  * align test invocation with upstream makefile to fix FTBFS
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 23 Oct 2023 09:39:59 -0400
+
+libpod (4.7.1+ds4-2) experimental; urgency=medium
+
+  * more reliable way to build podman-machine
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 23 Oct 2023 06:58:01 -0400
+
+libpod (4.7.1+ds4-1) experimental; urgency=medium
+
+  * New upstream release (Closes: #1053131)
+  * Refresh patches
+  * Tighten dependencies
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 16 Oct 2023 08:37:48 -0400
+
+libpod (4.6.2+ds1-4) unstable; urgency=medium
+
+  [ Anthony Fok ]
+  * [backport] libpod: move oom_score_adj clamp to init
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 22 Oct 2023 17:24:16 -0400
+
+libpod (4.6.2+ds1-3) unstable; urgency=medium
+
+  [ Konstantin Demin ]
+  * [backport] fix mount of cgroup without a netns
+
+  [ Reinhard Tartler ]
+  * [backport] linux, rootless: clamp oom_score_adj if it is too low
+  * podman: Add passt as recommends (Closes: #1052449)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 15 Oct 2023 15:09:22 -0400
+
+libpod (4.6.2+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+  * Add migration notes for vfs to overlay migration. Wording provided by:
+    Gregor Riepl <onitake@gmail.com>, Closes: #1050993
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 20 Sep 2023 13:00:37 -0400
+
+libpod (4.6.2+ds1-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Tighten dependencies
+  * Refresh patches
+  * drop remove-uber-jaeger-client-go.patch, merged upstream
+  * add revert-newer-docker2.patch, additional work to avoid dependency
+    on newer docker
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 17 Sep 2023 10:20:03 -0400
+
+libpod (4.5.1+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 09 Sep 2023 18:52:10 -0400
+
+libpod (4.5.1+ds1-1) experimental; urgency=medium
+
+  [ Faidon Liambotis ]
+  * New upstream release.
+  * Backport an upstream patch from v4.6.0 to remove the uber/jaeger-client-go
+    dependency, and unvendor the code.
+  * Add debian/copyright stanzas for the three remaining vendored libraries.
+
+  [ Reinhard Tartler ]
+  * Upload to experimental
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 07 Sep 2023 18:14:11 -0400
+
+libpod (4.5.0+ds2-1) experimental; urgency=medium
+
+  [ Reinhard Tartler ]
+  * New upstream release
+    - Prefers overlay storage driver over vfs, Closes: #1050993, 1038414
+    - which makes non-standard vfs options unnecessary, Closes: #1002997
+  * Install quadlet, Closes: #1034539
+  * Move fuse-overlayfs to Suggests, Closes: #1041050
+  * Unvendor some additional sources
+  * Build against vbauerster/mpb8, and drop patch vbauerster_mbp_7
+  * Disable ostree support
+
+  [ Faidon Liambotis ]
+  * Add myself to Uploaders.
+  * Update long description using upstream's latest verbiage.
+  * Bump Standards-Version to 4.6.2, no changes needed.
+  * Drop upstream patches:
+    - test--skip-issue-17366, as the underlying issue was fixed upstream.
+    - generate-crash, as it was unused, and a backport of a v4.0 commit.
+  * Call "make clean" during clean, to clean up generated documentation files
+    and restore the source tree to its pristine form, Closes: #1045188
+  * Install usr/share/user-tmpfiles.d/podman-docker.conf, Closes: #1034026
+  * Pass --no-source to dh_auto_build, and re-enable dh_missing
+    --fail-missing.
+  * Ship podman-remote's documentation, i.e. the podman-remote.1 manpage and
+    remote_client.md, in the podman-remote package.
+  * Ship podman-remote's bash completion.
+  * Move rootlessport and quadlet from /usr/lib/ to /usr/libexec/.
+  * Ship an empty /etc/containers/systemd directory, where container files can
+    be written for the systemd generator (quadlet) to pick them up.
+  * debian/copyright:
+    - Update to recent sources and remove obsolete entries and comments.
+    - Remove stanzas for now un-vendored code.
+    - Remove unused license stanzas: ISC and BSD-3-clause.
+    - Update debian/ copyright to latest authors
+    - Use "podman" in Upstream-Name and Source, to reflect an upstream change.
+  * debian/upstream/metadata:
+    - Replace invalid "Homepage" field by Repository/Repository-Browse.
+    - Add the Changelog field, pointing to the upstream release notes.
+  * Update debian/watch to point to /tags rather than /releases, as GitHub's
+    releases page now requires JavaScript.
+  * Rename the builtin_tests autopkgtest name to builtin-tests, as underscores
+    are invalid in test names (addresses illegal-runtime-test-name warning).
+  * Add a debian/gbp.conf config file, allowing to use standardized
+    git-buildpackage tools to update to newer versions.
+  * Resort and wrap debian/control using wrap-and-sort -ast.
+  * Remove unused source-includes-file-in-files-excluded lintian override.
+  * Add an absolute-symbolic-link-target-in-source lintian override, for the
+    "containerignore-symlink" e2e test, as that is harmless and clearly
+    intentional.
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 05 Sep 2023 21:33:43 -0400
+
+libpod (4.4.0+ds1-2) experimental; urgency=medium
+
+  [ Norbert Lange ]
+  * Build and install podman-remote, Closes: #1020540
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 12 Apr 2023 07:07:55 -0400
+
+libpod (4.4.0+ds1-1) experimental; urgency=medium
+
+  * New upstream version
+  * Disable failing test, cf. https://github.com/containers/podman/issues/17366
+  * disable sigstore functionalty, will be reenabled when the packages enters
+    Debian
+  * bump dependency on containers/{image,common,buildah}
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 04 Feb 2023 14:31:59 -0500
+
+libpod (4.3.1+ds1-8) unstable; urgency=medium
+
+  * [upstream] unbreak using docker as client
+  * debian/control: tighten dependencies against buildah (Closes: #1034871)
+  * [upstream] system reset: show graphRoot/runRoot before removal
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 30 Apr 2023 08:19:54 -0400
+
+libpod (4.3.1+ds1-7) unstable; urgency=medium
+
+  * [upstream] volume,container: chroot to source before exporting content
+    (Closes: #1032099), Fixes: CVE-2023-0778
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 10 Apr 2023 18:39:24 -0400
+
+libpod (4.3.1+ds1-6) unstable; urgency=medium
+
+  * Team upload
+
+  [ Reinhard Tartler ]
+  * Re-enable builtin tests, but mark as flaky
+
+  [ Shengjing Zhu ]
+  * Replace golang-github-uber-go-atomic-dev with golang-go.uber-atomic-dev
+  * Drop unused golang-github-{influxdata,hpcloud}-tail-dev in Build-Depends
+  * Replace golang-ginkgo-dev with golang-github-onsi-ginkgo-dev
+
+ -- Shengjing Zhu <zhsj@debian.org>  Sun, 26 Feb 2023 21:41:30 +0800
+
+libpod (4.3.1+ds1-5) unstable; urgency=medium
+
+  * Drop golang-github-containers-libpod-dev
+  * Add a simple smoketest
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 27 Nov 2022 12:25:39 -0500
+
+libpod (4.3.1+ds1-4) unstable; urgency=medium
+
+  * upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 24 Nov 2022 15:35:49 -0500
+
+libpod (4.3.1+ds1-3) experimental; urgency=medium
+
+  * debian/rules: make the previous change to build machine/qemu only
+    on supported architecture actually work
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 22 Nov 2022 17:49:12 -0500
+
+libpod (4.3.1+ds1-2) experimental; urgency=medium
+
+  * Build machine/qemu only on amd64, arm64, fixes FTBFS
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 14 Nov 2022 07:33:14 -0500
+
+libpod (4.3.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+    - Add container GID to additional groups,
+      fixes CVE-2022-2989, closes: #1019591
+  * Bugfix: Subordinate UID/GID ranges not fetched from libsubid,
+    Thanks to Sam Morris <sam@robots.org.uk> for the patch, closes: #1019929
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 13 Nov 2022 12:27:53 -0500
+
+libpod (4.2.0+ds1-3) experimental; urgency=medium
+
+  * Force using golang-go to avoid compilation failures with gcc-go
+  * Confirmed updated components allow podman to work, thanks to
+    Bastian Blank (Closes: #1012053), and is compiled against a
+    containers/common that is more mindful regarding foreign-arch
+    images (Closes: #1009376)
+  * Confirmed fix: "starting rootless container fails with: can't get final
+    child's PID from pipe: EOF", code change likely already in 4.1
+    thanks to Gabriel Filion (Closes: #1007022).
+  * Make podman recommend 'dbus-user-session', Closes: #1009747
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 19 Aug 2022 09:43:54 +0200
+
+libpod (4.2.0+ds1-2) experimental; urgency=medium
+
+  * tighten dependency on golang-github-opencontainers-runc-dev
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 17 Aug 2022 18:51:09 +0200
+
+libpod (4.2.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+  * drop patches merged upstream
+  * add distro patch to use system 'goimports' utility
+  * tighten dependencies
+  * hooks/docs no longer provides section 5 manpages
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 17 Aug 2022 15:37:36 +0200
+
+libpod (4.1.1+ds1-3) experimental; urgency=medium
+
+  * reorganize dependencies for networking stack
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 05 Aug 2022 20:47:56 +0200
+
+libpod (4.1.1+ds1-2) experimental; urgency=medium
+
+  * organize GOLANG_EXCLUDES and GOLANG_TEST_EXCLUDES
+  * add patches fix-test-TestEnvVarValue-NN.patch, fixes
+    Test failures for !amd64, !arm64 Closes: #1014309
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 04 Jul 2022 12:07:31 -0400
+
+libpod (4.1.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 03 Jul 2022 17:33:34 -0400
+
+libpod (4.1.0+ds2-2) experimental; urgency=medium
+
+  * Avoid building podman/pkg/machine/e2e on all architectures
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 19 May 2022 16:31:29 -0400
+
+libpod (4.1.0+ds2-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 19 May 2022 06:42:45 -0400
+
+libpod (4.0.3+ds1-1) experimental; urgency=medium
+
+  [ Antonio Terceiro ]
+  * Stop installing systemd socket units under /usr/lib, Closes: #1009374
+
+  [ Reinhard Tartler ]
+  * New upstream release
+  * Skip installation of podman-remote(1), Closes: #1000521
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 16 Apr 2022 06:41:11 -0400
+
+libpod (4.0.1+ds1-3) experimental; urgency=medium
+
+  * Fix installation of systemd units
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 06 Mar 2022 17:16:32 -0500
+
+libpod (4.0.1+ds1-2) experimental; urgency=medium
+
+  * Install rootlessport, Closes: #1006426
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 25 Feb 2022 12:47:27 -0500
+
+libpod (4.0.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 23 Feb 2022 21:43:55 -0500
+
+libpod (4.0.0~rc5+ds1-1) experimental; urgency=medium
+
+  * New upstream release, closes: #1003486
+  * Bug fix: "podman-restart missing from podman package", thanks to Jelle
+    van der Waa (Closes: #1001780).
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 21 Feb 2022 20:44:22 -0500
+
+libpod (3.4.7+ds1-3) unstable; urgency=medium
+
+  * backport upstream patch to avoid runtime crash,
+    Closes: #1010000 for real this time.
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 24 Apr 2022 08:07:13 -0400
+
+libpod (3.4.7+ds1-2) unstable; urgency=medium
+
+  * Rebuild against opencontainers/runtime-tools >> 0.9.0+git20220423,
+    Closes: #1010000
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 23 Apr 2022 10:19:28 -0400
+
+libpod (3.4.7+ds1-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Fixes:  CVE-2022-1227
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 21 Apr 2022 16:09:59 -0400
+
+libpod (3.4.6+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+    - Fixes: CVE-2022-27191, CVE-2022-27649
+  * Fix installation of systemd units
+
+  [ Antonio Terceiro ]
+  * Stop installing systemd socket units under /usr/lib (Closes: #1009374)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 14 Apr 2022 07:11:33 -0400
+
+libpod (3.4.4+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+    Confirming that CVE-2021-4024 is fixed in 3.4.3, Closes: #1000844
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 25 Dec 2021 19:48:14 -0500
+
+libpod (3.4.3+ds1-1) unstable; urgency=medium
+
+  * New upstream release, Closes: #1001321
+    - podman machine spawns gvproxy with port binded to all IPs,
+      Closes: #1000844
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 24 Dec 2021 14:40:01 -0500
+
+libpod (3.4.2+ds1-1) unstable; urgency=medium
+
+  * New upstream release
+  * Compile against system github.com/dtylman/scp
+  * Revert upstream commit that requires newer godbus than we currently
+    have in unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 17 Nov 2021 14:30:31 -0500
+
+libpod (3.4.1+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+  * podman: Install tmpfiles.d/podman.conf, Closes: #995586
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 26 Oct 2021 18:20:56 -0400
+
+libpod (3.4.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 25 Oct 2021 13:58:58 -0400
+
+libpod (3.4.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 08 Oct 2021 16:19:40 -0400
+
+libpod (3.3.1+ds2-1) unstable; urgency=medium
+
+  * New upstream release
+    - drop coreos/{go-iptables,go-systemd}
+  * Drop unneeded dependency on golang-github-openshift-api-dev
+  * Bump Standards-Version, no changes needed
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 07 Sep 2021 11:53:40 +0200
+
+libpod (3.3.0+ds2-2) unstable; urgency=medium
+
+  * Apply missing patches that were forgotten in the last merge
+    from experimental:
+    - Prefer crun over runc
+    - Add depends in iptables
+  * Upstream improved documentation on requirements for rootless,
+    Closes: #983395
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 04 Sep 2021 18:57:31 +0200
+
+libpod (3.3.0+ds2-1) unstable; urgency=medium
+
+  * New upstream release, Closes: #992138, #992142
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 30 Aug 2021 12:37:34 +0200
+
+libpod (3.2.3+ds1-1) experimental; urgency=medium
+
+  * New upstream releases, Closes: #991197
+  * Bump dependency on golang-github-containers-common,buildah
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 20 Jul 2021 18:22:50 -0400
+
+libpod (3.2.2+ds1-1) experimental; urgency=medium
+
+  * New upstream releases, Closes: #990333
+  * Bump dependency on golang-github-containers-common
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 28 Jun 2021 08:15:51 -0400
+
+libpod (3.2.1+ds1-2) experimental; urgency=medium
+
+  * Provide 'podman-docker' package, Closes: #984770
+  * Tighten build dependency on golang-golang-x-net-dev
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 15 Jun 2021 13:41:46 -0400
+
+libpod (3.2.1+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Tighten build-depends on golang-github-containers-common-dev
+    and golang-github-containers-buildah-dev
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 14 Jun 2021 14:08:01 -0400
+
+libpod (3.2.0+ds5-2) experimental; urgency=medium
+
+  * Add patch from upstream to fix FTBFS on !(arm64, amd64)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 12 Jun 2021 07:07:45 -0400
+
+libpod (3.2.0+ds5-1) experimental; urgency=medium
+
+  * New upstream release
+  * Install zsh completions (Closes: #989411)
+  * Disable LTO, cf. https://wiki.debian.org/ToolChain/LTO
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 08 Jun 2021 17:33:43 -0400
+
+libpod (3.1.2+ds1-2) experimental; urgency=medium
+
+  * add missing vendored files included in tarball
+  * (explicitly) build-depend on golang-github-moby-term-dev
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 31 May 2021 09:55:52 -0400
+
+libpod (3.1.2+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Drop dependency on golang-github-seccomp-containers-golang-dev,
+    Closes: #988445
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 28 May 2021 17:57:28 -0400
+
+libpod (3.1.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Reorganized git source layout. Drop a number of vendored libraries
+    (in favor of versions from the Debian archive)
+    - github.com/go-logr/logr
+    - github.com/moby/term
+    - github.com/nxadm/tail
+    - github.com/willf/bitset
+    - go.etcd.io/bbolt
+    - google.golang.org/protobuf
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 03 Apr 2021 16:28:54 -0400
+
+libpod (3.0.1+dfsg1-3) unstable; urgency=medium
+
+  * Add networking-lookup-child-IP-in-networks.patch, fixes rootless
+    connection issue "Connection reset by peer", Closes: #989803
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 13 Jun 2021 18:28:49 -0400
+
+libpod (3.0.1+dfsg1-2) unstable; urgency=medium
+
+  * Prefer crun over runc, Closes: #985379
+  * Add depends in iptables, Closes: #987207
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 21 Apr 2021 17:36:07 -0400
+
+libpod (3.0.1+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release
+  * debian/control: tighten dependencies
+  * drop inspect-volume-data.patch, merged upstream
+  * Use packaged version of ocicrypt
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 24 Feb 2021 06:46:17 -0500
+
+libpod (3.0.0+dfsg1-2) unstable; urgency=medium
+
+  * Adjust dependencies on containers/{storage,image,common,buildah}
+    as discussed with upstream
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 12 Feb 2021 08:42:39 -0500
+
+libpod (3.0.0+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 12 Feb 2021 06:12:02 -0500
+
+libpod (3.0.0~rc3+dfsg1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Cleanup varlink service, closes: #981708
+  * Tighten dependency on buildah to pickup fix for caching bug,
+    closes: #982467
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 10 Feb 2021 06:54:28 -0500
+
+libpod (3.0.0~rc2+dfsg1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 02 Feb 2021 17:21:00 -0500
+
+libpod (3.0.0~rc2+dfsg1-1) experimental; urgency=medium
+
+  * New upstream release
+  * Install auto-update systemd units
+  * debian/copyright: more updates
+  * Install auto-update systemd units
+  * systemd: Don't enable podman-auto-update.service in default.target
+    (Closes: #981097)
+  * Pass buildtags also go test invocation to unbreak autopkgtests when
+    run as root
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 30 Jan 2021 22:17:33 -0500
+
+libpod (3.0.0~rc1+dfsg1-1) experimental; urgency=medium
+
+  * New upstream version
+  * Drop varlink references, dropped upstream
+  * Remove confusing line (Closes: #980480)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 24 Jan 2021 11:16:44 -0500
+
+libpod (2.2.1+dfsg1-1) experimental; urgency=medium
+
+  * New upstream version
+  * drop cobra-spf13-api.patch, no longer needed
+  * Rely on upstream's build scripts to install manpages (Closes: #977502)
+  * Remove conflicting manpage container-mounts(5), Closes: #977502
+  * drop old-docker-api.patch, no longer needed
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 18 Dec 2020 07:16:27 -0500
+
+libpod (2.2.0+dfsg1-1) experimental; urgency=medium
+
+  * debian/changelog: Bump to libpod 2.2.0
+  * Refresh distro patches
+  * debian/control: Tighten build-dependency on buildah
+  * add cobra-spf13-api.patch
+  * debian/copyright: manual updates
+  * podman: Add depends on golang-github-containernetworking-plugin-dnsname
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 08 Dec 2020 15:45:22 -0500
+
+libpod (2.1.1+dfsg1-7) unstable; urgency=medium
+
+  * Pass buildtags also go test invocation to unbreak autopkgtests
+    on machines that run as real root.
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 01 Feb 2021 06:43:56 -0500
+
+libpod (2.1.1+dfsg1-6) unstable; urgency=medium
+
+  * debian/rules: Remove confusing line (Closes: #980480)
+  * systemd: Don't enable podman-auto-update.service in default.target
+    (Closes: #981097)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 26 Jan 2021 21:51:00 -0500
+
+libpod (2.1.1+dfsg1-5) unstable; urgency=medium
+
+  * Install auto-update systemd units
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 25 Jan 2021 07:49:44 -0500
+
+libpod (2.1.1+dfsg1-4) unstable; urgency=medium
+
+  * Ignore containers.conf sysctl when namespaces set to host
+    (Closes: #979313)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Wed, 06 Jan 2021 20:48:36 -0500
+
+libpod (2.1.1+dfsg1-3) unstable; urgency=medium
+
+  [ Dmitry Smirnov ]
+  * Tightened versioned dependency on "containernetworking-plugins".
+
+  [ Reinhard Tartler ]
+  * debian/copyright: various cleanups
+  * Fix handling of Ambient/Inheritable caps for non root user, Closes: #977717
+  * Rely on upstream's build scripts to install manpages
+  * Remove conflicting manpage container-mounts(5), Closes: #977502
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 22 Dec 2020 13:00:57 -0500
+
+libpod (2.1.1+dfsg1-2) unstable; urgency=medium
+
+  [ Reinhard Tartler ]
+  * Install runc by default, Closes: #971253
+  * Builds against structured-merge-diff/v4, Closes: #976410
+
+  [ Antonio Terceiro ]
+  * Recommend catatonit before the other inits (Closes: #971815)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 07 Dec 2020 06:56:09 -0500
+
+libpod (2.1.1+dfsg1-1) unstable; urgency=medium
+
+  [ Reinhard Tartler ]
+  * New upstream release: 2.1.1
+  * golang-github-containers-libpod-dev: expose golang sources
+  * debian/copyright: update using cme update dpkg-copyright
+
+  [ Arnaud Rebillout ]
+  * Unvendor sigs.k8s.io/yaml
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 27 Nov 2020 12:45:58 -0500
+
+libpod (2.0.6+dfsg1-2) unstable; urgency=medium
+
+  * Restored io.podman/varlink interface, which is still in use by
+    nomad-driver-podman.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Thu, 22 Oct 2020 21:33:07 +1100
+
+libpod (2.0.6+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release
+  * debian/copyright: cleanups
+  * drop malformed lintian override
+  * Bump standard version, no changes needed
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 14 Sep 2020 15:35:01 -0400
+
+libpod (2.0.4+dfsg2-5) unstable; urgency=medium
+
+  * Team upload.
+  * Upload to unstable
+
+ -- Shengjing Zhu <zhsj@debian.org>  Sun, 23 Aug 2020 02:42:00 +0800
+
+libpod (2.0.4+dfsg2-4) experimental; urgency=medium
+
+  * Team upload.
+  * Tighten buildah Build-Depends version
+
+ -- Shengjing Zhu <zhsj@debian.org>  Thu, 20 Aug 2020 02:54:27 +0800
+
+libpod (2.0.4+dfsg2-3) experimental; urgency=medium
+
+  * Team upload.
+
+  [ Reinhard Tartler ]
+  * Add more notes on how to get started with Debian kernels
+
+  [ Shengjing Zhu ]
+  * Add patch to fix build with new runc
+
+ -- Shengjing Zhu <zhsj@debian.org>  Thu, 20 Aug 2020 01:00:02 +0800
+
+libpod (2.0.4+dfsg2-2) unstable; urgency=medium
+
+  [ Martin Pitt ]
+  * Bump conmon dependency
+
+  [ Dmitry Smirnov ]
+  * Harmonize repacksuffix to fix CI.
+  * Tighten recommendation on fuse-overlayfs (>= 1.0.0~).
+
+  [ Reinhard Tartler ]
+  * Bug fix: "Breaks docker", thanks to Jan Hudec (Closes: #968207).
+    - No longer create symlink /run/docker.sock to avoid interfering
+      with the docker daemon. Users that wish to replace the docker
+      daemon with podman are advised to install the symlink themselves
+      and arrange appropriate permissions for podman.sock.
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 11 Aug 2020 07:41:44 -0400
+
+libpod (2.0.4+dfsg2-1) unstable; urgency=medium
+
+  * Vendor in protobuf 3 to workaround #961814
+  * Remove "insanity workaround" related to protobuf
+  * Hand in forgotten changelog entry in 2.0.4+dfsg1-1
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 03 Aug 2020 07:20:45 -0400
+
+libpod (2.0.4+dfsg1-1) unstable; urgency=medium
+
+  * New upstream release
+  * No longer install /etc/containers/libpod.conf (Closes: #961016)
+      This file is deprecated in version 2.0 and is superseeded by
+      /etc/containers/containers.conf, which is provided by the
+      golang-github-containers-common package. The old file hardcodes
+      a default OCI runtime that breaks in default installations.
+  * Fixed REST API regression (Closes: #966501)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 30 Jul 2020 07:12:41 -0400
+
+libpod (2.0.3+dfsg1-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release
+  * Install systemd helper files in favor of varlink (Closes: #966118)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 26 Jul 2020 10:53:39 -0400
+
+libpod (2.0.2+dfsg1-3) unstable; urgency=medium
+
+  * Team upload.
+  * Upload to unstable.
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 20 Jul 2020 10:18:00 -0400
+
+libpod (2.0.2+dfsg1-2) experimental; urgency=medium
+
+  * Team upload.
+  * debian/rules: Add XDG_RUNTIME_DIR settings on build
+    - Based on debian/rules from the ibus package, unbreaks
+      testsuite on many buildds
+
+ -- Reinhard Tartler <siretart@tauware.de>  Fri, 17 Jul 2020 06:56:20 -0400
+
+libpod (2.0.2+dfsg1-1) experimental; urgency=medium
+
+  * Team upload.
+  * New upstream version, Closes: #964378
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 16 Jul 2020 18:06:15 -0400
+
+libpod (1.6.4+dfsg1-4) unstable; urgency=medium
+
+  * Team upload.
+  * Rename golang-x-text-dev to golang-golang-x-text-dev
+
+ -- Shengjing Zhu <zhsj@debian.org>  Sun, 12 Jul 2020 18:51:51 +0800
+
+libpod (1.6.4+dfsg1-3) unstable; urgency=high
+
+  * Team upload.
+  * Do not copy up when volume is not empty
+    CVE-2020-1726, Closes: #961421
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 28 May 2020 17:24:41 -0400
+
+libpod (1.6.4+dfsg1-2) unstable; urgency=medium
+
+  * Un-vendored "golang-github-checkpoint-restore-go-criu-dev".
+  * Tightened dependency: "conmon (>= 2.0.2~)".
+  * rules:
+    + Golang insanity workaround.
+    + Removed obsolete "containers_image_ostree" build tag.
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 14 Jan 2020 10:56:58 +1100
+
+libpod (1.6.4+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Install "seccomp.json".
+  * Install tutorials.
+  * Un-vendored "openshift/api" library.
+  * Build-Depends:
+    - golang-github-boltdb-bolt-dev
+    + golang-github-coreos-bbolt-dev (>= 1.3.3~)
+    - golang-github-containerd-continuity-dev
+    = golang-github-containers-buildah-dev (>= 1.11.6~)
+    = golang-github-containers-image-dev (>= 5.0.0~)
+    + golang-github-openshift-api-dev
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Fri, 03 Jan 2020 08:36:51 +1100
+
+libpod (1.6.2+dfsg-3) unstable; urgency=medium
+
+  * Install annotated CNI examples.
+  * Replaced default CNI "bridge" policy with "ptp".
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 31 Dec 2019 12:07:07 +1100
+
+libpod (1.6.2+dfsg-2) unstable; urgency=medium
+
+  * Added note about "swapaccount" to README.Debian.
+  * libpod.conf: prefer "crun" over "runc".
+  * Tightened "fuse-overlayfs" dependency.
+  * Only install "registries.conf" example but not conf file.
+  * Use "tini-static" for "init_path" built-in default instead of
+    "catatonit".
+  * Added "buildah" to Recommends since it provides "containers/image" man
+    pages.
+  * Standards-Version: 4.4.1
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Sun, 29 Dec 2019 20:49:01 +1100
+
+libpod (1.6.2+dfsg-1) unstable; urgency=medium
+
+  * Initial release (Closes: #930440).
+
+ -- Dmitry Smirnov <onlyjob@debian.org>  Tue, 12 Nov 2019 13:29:33 +1100
