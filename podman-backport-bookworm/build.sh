@@ -17,7 +17,7 @@ apt-get install -qy packaging-dev debian-keyring devscripts equivs curl
 
 git clone --depth=1 -b $TAG https://github.com/containers/podman.git podman
 curl "https://salsa.debian.org/debian/libpod/-/archive/${DEBIAN_REV}/libpod-${DEBIAN_REV}.tar.gz?path=debian" | tar -C podman --strip-components=1 -zxv
-cp control changelog podman/debian/
+cp -r debian podman
 
 cd podman
 git add -f .
