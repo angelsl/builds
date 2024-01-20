@@ -14,7 +14,8 @@ deb-src http://deb.debian.org/debian testing main
 deb http://deb.debian.org/debian bookworm-backports main
 EOF
 apt-get update -qy
-apt-get install -qy packaging-dev debian-keyring devscripts equivs curl golang/bookworm-backports
+apt-get install -qy golang/bookworm-backports
+apt-get install -qy packaging-dev debian-keyring devscripts equivs curl
 
 git clone --depth=1 -b $TAG https://github.com/containers/podman.git podman
 curl "https://salsa.debian.org/debian/libpod/-/archive/${DEBIAN_REV}/libpod-${DEBIAN_REV}.tar.gz?path=debian" | tar -C podman --strip-components=1 -zxv
