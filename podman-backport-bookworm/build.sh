@@ -12,7 +12,7 @@ dopkg() {
   apt-get source "$1"/testing
   cd "$1"-*/
   mk-build-deps --install --remove --tool 'apt-get -qy -o Debug::pkgProblemResolver=yes --no-install-recommends'
-  yes | EMAIL="root@localhost" dch --bpo ""
+  EDITOR=true EMAIL="root@localhost" dch --bpo ""
   dpkg-buildpackage --build=binary --unsigned-changes
   cd ..
   dpkg -i *.deb || true
