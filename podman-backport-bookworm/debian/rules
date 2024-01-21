@@ -1,0 +1,119 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+include /usr/share/dpkg/pkg-info.mk
+
+# cf. https://wiki.debian.org/ToolChain/LTO and https://github.com/golang/go/issues/45275
+export DEB_BUILD_MAINT_OPTIONS=optimize=-lto
+
+export GO111MODULE=off
+
+export DH_GOLANG_GO_GENERATE := 1
+
+export DH_GOLANG_INSTALL_EXTRA := cni utils/testdata test/e2e/testdata pkg/trust/testdata vendor/github.com/containers/buildah/internal/mkcw/embed
+
+export DH_GOLANG_EXCLUDES := \
+	contrib/perftest \
+	dependencies \
+	hack/podman-registry-go \
+	pkg/bindings/test \
+	podman/pkg/machine/e2e \
+	test/e2e \
+	test/endpoint \
+	test/framework \
+	test/goecho \
+	test/testvol \
+	test/utils \
+	test/version
+
+# machine/qemu only works on amd64, arm64
+ifneq (,$(filter amd64 arm64,$(DEB_HOST_ARCH)))
+export DH_GOLANG_EXCLUDES += pkg/machine/qemu
+endif
+
+
+export DH_GOLANG_TEST_EXCLUDES := $(DH_GOLANG_EXCLUDES) \
+	hack \
+	lock/file \
+	network/cni \
+	pkg/bindings \
+	pkg/machine \
+	podman/cmd/podman/common
+
+
+export HOME=$(CURDIR)/debian/tmp
+
+## https://podman.io/getting-started/installation#build-tags
+BUILDTAGS := apparmor,seccomp,selinux,systemd,libsubid
+BUILDTAGS_REMOTE := remote,exclude_graphdriver_btrfs,btrfs_noversion,exclude_graphdriver_devicemapper,containers_image_openpgp
+
+# containers_image_openpgp
+
+%:
+	dh $@ --buildsystem=golang --with=golang,bash-completion --builddirectory=_output
+
+execute_after_dh_auto_clean:
+	# this is in addition to the golang cleanups, and cleans up docs among
+	# other things. Use bash, as there is a $(<.gitignore) bashism in there.
+	$(MAKE) clean SHELL=/bin/bash
+
+override_dh_auto_build:
+	$(MAKE) docs docker-docs GOMD2MAN=/usr/bin/go-md2man
+
+#	LDFLAGS_PODMAN="-X main.gitCommit=$(GIT_COMMIT)"
+#   upstream Makefile calls `go build ... -o bin/podman-remote ./cmd/podman`
+#   dont know how I get dh_auto_build to do that.
+	DH_GOLANG_BUILDPKG="github.com/containers/podman/cmd/podman" \
+	dh_auto_build -v  --builddirectory=_output -- -tags "$(BUILDTAGS_REMOTE)" \
+          -ldflags "-X main.buildInfo=$(DEB_VERSION)"
+	mv _output/bin/podman _output/bin/podman-remote
+	DH_GOLANG_BUILDPKG="github.com/containers/podman/cmd/..." \
+	dh_auto_build -v  --builddirectory=_output -- -tags "$(BUILDTAGS)" \
+          -ldflags "-X main.buildInfo=$(DEB_VERSION)"
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	# make test binaries available where the tests expect them
+	ln -sv  ../../../../bin  _output/src/github.com/containers/podman/bin
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/.cache
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/.config
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/.local/share
+	mkdir -p -m700 $(CURDIR)/debian/tmp-home/run
+	env \
+	  HOME=$(CURDIR)/debian/tmp-home/.cache \
+	  XDG_CACHE_HOME=$(CURDIR)/debian/tmp-home/.cache \
+	  XDG_CONFIG_HOME=$(CURDIR)/debian/tmp-home/.config \
+	  XDG_DATA_HOME=$(CURDIR)/debian/tmp-home/.local/share \
+	  XDG_RUNTIME_DIR=$(CURDIR)/debian/tmp-home/run \
+	  PATH="$(CURDIR)/_output/bin:$$PATH" \
+	  DH_GOLANG_EXCLUDES="$${DH_GOLANG_TEST_EXCLUDES}" \
+	dh_auto_test -v --max-parallel=2 -- -tags "$(BUILDTAGS)"
+	rm -rf $(CURDIR)/debian/tmp-home
+endif
+
+override_dh_auto_install:
+	dh_auto_install \
+		--destdir=debian/tmp \
+		--buildsystem=golang \
+		--builddirectory=_output \
+		-- \
+		--no-source
+	# generate and install systemd unit files, manpages, etc.
+	make DESTDIR=debian/tmp PREFIX=/usr \
+		install.systemd install.docker-full install.man
+
+execute_after_dh_installman:
+	# installed in the podman-remote package instead
+	rm -f --verbose $(CURDIR)/debian/podman/usr/share/man/man1/podman-remote.1*
+	# avoid file conflicts with the podman-compose/docker-compose packages, cf. #1054460
+	rm -f --verbose $(CURDIR)/debian/podman/usr/share/man/man1/podman-compose.1*
+	rm -f --verbose $(CURDIR)/debian/podman-docker/usr/share/man/man1/docker-compose.1*
+	# don't ship "dockersh": podmansh is a podman-specific function
+	rm -f --verbose $(CURDIR)/debian/podman-docker/usr/share/man/man1/dockersh.1*
+
+override_dh_installsystemd:
+	dh_installsystemd
+	dh_installsystemd --name=podman-auto-update
+	dh_installsystemd --name=podman-restart

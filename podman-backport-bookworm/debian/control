@@ -15,10 +15,20 @@ Build-Depends:
  go-md2man,
  golang-go,
  libapparmor-dev,
+ libassuan-dev,
  libbtrfs-dev,
+ libc6-dev,
  libdevmapper-dev,
  libglib2.0-dev,
+ libgpgme-dev,
+ libgpg-error-dev,
+ libprotobuf-dev,
+ libprotobuf-c-dev,
+ libseccomp-dev,
+ libselinux1-dev,
+ libsystemd-dev,
  libsubid-dev,
+ libprotobuf-dev,
 Homepage: https://github.com/containers/podman
 Vcs-Browser: https://salsa.debian.org/debian/libpod
 Vcs-Git: https://salsa.debian.org/debian/libpod.git
