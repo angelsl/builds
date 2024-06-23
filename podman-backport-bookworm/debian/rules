@@ -12,13 +12,12 @@ export GO111MODULE=off
 
 export DH_GOLANG_GO_GENERATE := 1
 
-export DH_GOLANG_INSTALL_EXTRA := cni utils/testdata test/e2e/testdata pkg/trust/testdata
+export DH_GOLANG_INSTALL_EXTRA := cni utils/testdata test/e2e/testdata pkg/trust/testdata vendor/github.com/containers/buildah/internal/mkcw/embed
 
 export DH_GOLANG_EXCLUDES := \
 	contrib/perftest \
 	dependencies \
 	hack/podman-registry-go \
-	cmd/podman/machine \
 	pkg/bindings/test \
 	podman/pkg/machine/e2e \
 	test/e2e \
@@ -28,13 +27,6 @@ export DH_GOLANG_EXCLUDES := \
 	test/testvol \
 	test/utils \
 	test/version
-
-# machine/qemu only works on amd64, arm64
-# set default build target explicitly, rely on dependencies
-export DH_GOLANG_BUILDPKG := \
-	github.com/containers/podman/cmd/podman \
-	github.com/containers/podman/cmd/rootlessport \
-	github.com/containers/podman/cmd/quadlet
 
 export DH_GOLANG_TEST_EXCLUDES := $(DH_GOLANG_EXCLUDES) \
 	hack \
@@ -67,6 +59,7 @@ override_dh_auto_build:
 	dh_auto_build -v  --builddirectory=_output -- -tags "$(BUILDTAGS_REMOTE)" \
           -ldflags "-X main.buildInfo=$(DEB_VERSION)"
 	mv _output/bin/podman _output/bin/podman-remote
+	DH_GOLANG_BUILDPKG="github.com/containers/podman/cmd/..." \
 	dh_auto_build -v  --builddirectory=_output -- -tags "$(BUILDTAGS)" \
           -ldflags "-X main.buildInfo=$(DEB_VERSION)"
 
