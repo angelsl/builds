@@ -5,8 +5,8 @@ set -euxo pipefail
 cd "$(dirname ${BASH_SOURCE[0]})"
 
 export DEBIAN_FRONTEND=noninteractive
-TAG=v4.8.3
-DEBIAN_REV=350b6e77e2267beb83b76abbb5f847c8f969c4a5
+TAG=v5.1.1
+DEBIAN_REV=40cce732502c55e598b68a2b8f4288e6db221a55
 
 mkdir -p /etc/apt/sources.list.d
 cat <<EOF > /etc/apt/sources.list.d/src.list

@@ -1,8 +1,71 @@
-libpod (4.8.3-1~bpo12~sl1) unstable; urgency=medium
+libpod (5.1.1-1~bpo12~sl1) unstable; urgency=medium
 
-  * build 4.8.3 vendored
+  * build 5.1.1 vendored
 
- -- angelsl <angelsl@localhost>  Sun, 21 Jan 2024 00:00:00 +0800
+ -- angelsl <angelsl@localhost>  Sun, 23 Jun 2024 00:00:00 +0800
+
+libpod (5.0.2+ds1-3) experimental; urgency=medium
+
+  * Build against buildah 1.35
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 05 May 2024 07:43:03 -0400
+
+libpod (5.0.2+ds1-2) experimental; urgency=medium
+
+  * Fix build on !amd64,!arm64
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 04 May 2024 08:33:41 -0400
+
+libpod (5.0.2+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 27 Apr 2024 18:45:03 -0400
+
+libpod (5.0.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon, 08 Apr 2024 21:24:24 +0000
+
+libpod (4.9.2+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 06 Feb 2024 19:05:37 -0500
+
+libpod (4.9.2+ds1-1) experimental; urgency=medium
+
+  * New Upstream release, Closes: #1062529
+    - Fixes: CVE-2024-23651, CVE-2024-23652, and CVE-2024-23653.
+  * Tighten dependencies on containers/{image,common,buildah}
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 06 Feb 2024 11:17:43 -0500
+
+libpod (4.9.0+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Thu, 25 Jan 2024 06:47:15 -0500
+
+libpod (4.9.0+ds1-1) experimental; urgency=medium
+
+  * New upstream release, closes: #1061383
+  * Build against buildah 1.33.3
+
+ -- Reinhard Tartler <siretart@tauware.de>  Tue, 23 Jan 2024 18:14:02 -0500
+
+libpod (4.8.3+ds1-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 21 Jan 2024 17:27:25 -0500
+
+libpod (4.8.3+ds1-1) experimental; urgency=medium
+
+  * New upstream release, Closes: #1057618
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sun, 21 Jan 2024 08:42:13 -0500
 
 libpod (4.7.2+ds1-2) unstable; urgency=medium
 
